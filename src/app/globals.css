@@ -1,26 +1,449 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --backgroundColor: #070709;
+  --surfaceColor: #0e0d11;
+  --accentRed: #B32624;
+  --accentWine: #6e1c22;
+  --accentGlow: #e04845;
+  --vh: 100vh;
+  --cWidth: 94%;
+  --cMaxWidth: 1920px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--backgroundColor);
+  color: #ededef;
+  font-family: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Luxury Multi-Layered Rich Black / Obsidian Background */
+body {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(110, 28, 34, 0.18) 0%, transparent 60%),
+    radial-gradient(circle at 10% 20%, rgba(179, 38, 36, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(110, 28, 34, 0.12) 0%, transparent 50%),
+    #070709;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cursor-main {
+  --size: 40px;
+  position: fixed;
+  top: calc(var(--size) / -2);
+  left: calc(var(--size) / -2);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50px;
+  pointer-events: none;
+  z-index: 9999;
+  
+  background-color: #B32624;
+  box-shadow: 0px 0px 30px 4px rgba(179, 38, 36, 0.85);
+  mix-blend-mode: difference;
+  
+  /* FIXED: Only animate layout properties to stop the color-flashing glitch */
+  transition: top 0.2s ease-out, left 0.2s ease-out, width 0.25s ease-out, height 0.25s ease-out, border-radius 0.25s ease-out;
+}
+
+.cursor-icons {
+  top: 10px;
+  left: 10px;
+  height: calc(var(--cursorH) - 20px);
+  border-radius: 30px;
+  
+  background-color: #B32624;
+  mix-blend-mode: difference;
+  box-shadow: 0 0 40px 10px rgba(179, 38, 36, 0.95);
+  
+  /* FIXED: Matches the clean transition above */
+  transition: top 0.2s ease-out, left 0.2s ease-out, width 0.25s ease-out, height 0.25s ease-out, border-radius 0.25s ease-out;
+}
+.cursor-disable {
+  --size: 0px;
+  opacity: 0;
+}
+/* =========================================
+   2. SLIDING HOVER LINKS (Navbar & Buttons)
+   ========================================= */
+.hover-link {
+  position: relative;
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.hover-in {
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.hover-in div {
+  display: flex;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: var(--accentGlow);
+}
+
+.hover-link:hover .hover-in {
+  transform: translateY(-100%);
+  color: var(--accentGlow);
+}
+
+/* =========================================
+   3. TOP NAVBAR
+   ========================================= */
+.header {
+  display: flex;
+  max-width: var(--cMaxWidth);
+  width: var(--cWidth);
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 0px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  z-index: 9999;
+}
+
+.navbar-title {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #ededef;
+}
+
+.navbar-connect {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  color: #8e8c94;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.navbar-connect:hover {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(224, 72, 69, 0.8);
+}
+
+.header ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 60px;
+  font-size: 14px;
+}
+
+.header ul li {
+  letter-spacing: 1.5px;
+  color: #ededef;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* =========================================
+   4. BOTTOM-LEFT SOCIALS & RESUME
+   ========================================= */
+.icons-section {
+  position: fixed;
+  max-width: var(--cMaxWidth);
+  width: var(--cWidth);
+  bottom: 0;
+  z-index: 99;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.social-icons {
+  pointer-events: auto;
+  position: absolute;
+  left: -10px; /* Pulls it slightly closer to the edge */
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This perfectly centers the icons inside the pill! */
+  gap: 16px;
+  z-index: 1000; 
+  
+  /* Only vertical padding. This fixes the fat bounding box! */
+  padding: 15px 0; 
+  width: 52px; /* Matches the sleek pill width exactly */
+}
+
+.social-icons span {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  display: flex;
+}
+
+.social-icons span {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  display: flex;
+}
+
+.social-icons a {
+  --siLeft: 50%;
+  --siTop: 50%;
+  position: absolute;
+  left: var(--siLeft, 50%);
+  top: var(--siTop, 50%);
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: #8e8c94;
+  will-change: left, top;
+  transition: transform 0.25s ease-out, color 0.3s ease, filter 0.3s ease;
+
+}
+/* 1. When the mouse enters the dock, turn ALL icons Red. 
+      The Red cursor's 'difference' mode will instantly turn them all Black! */
+.social-icons:hover a {
+  color: #B32624;
+}
+
+/* 2. Add a slight scale pop to the specific icon you are touching */
+.social-icons a:hover {
+  color: #B32624; /* Red minus Red = crisp Black icons */
+  transform: scale(1.15);
+}
+
+.social-icons a svg {
+  width: 24px !important;
+  height: 24px !important;
+  display: block;
+}
+
+.resume-button {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  bottom: 38px;
+  right: 0;
+  white-space: nowrap;
+  letter-spacing: 4px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #8e8c94;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.resume-button:hover {
+  color: #ffffff;
+}
+
+.resume-button span.resume-icon {
+  color: #ededef;
+  display: flex;
+  align-items: center;
+}
+
+.resume-button span.resume-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+
+.landing-section {
+  width: 100%;
+  max-width: var(--cMaxWidth);
+  margin: auto;
+  position: relative;
+  height: var(--vh);
+}
+
+.landing-container {
+  width: var(--cWidth);
+  margin: auto;
+  height: 100%;
+  position: relative;
+  max-width: var(--cMaxWidth);
+}
+
+/* Center Backlight behind 3D Totem */
+.character-rim {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(179, 38, 36, 0.45) 0%, rgba(110, 28, 34, 0.2) 60%, transparent 80%);
+  filter: blur(75px);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -48%) scaleX(1.3);
+  pointer-events: none;
+}
+
+.character-center-stage {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 680px;
+  height: 100vh;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Left Side: Hello! I'm MUHAMMED FAVAZ AM */
+.landing-intro {
+  position: absolute;
+  z-index: 12;
+  top: 50%; 
+  left: 5%; 
+  transform: translateY(-50%);
+}
+
+.landing-intro h2 {
+  margin: 0;
+  color: #8e8c94;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.landing-intro h1 {
+  margin: 6px 0 0 0;
+  letter-spacing: 2px;
+  font-size: 46px;
+  line-height: 46px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #ededef;
+}
+
+/* Right Side Block */
+.landing-info {
+  position: absolute;
+  top: 50%; 
+  right: -3%; /* Anchored to the right side of the screen */
+  left: auto;
+  transform: translateY(-50%);
+  z-index: 12;
+  /* Align text left so "MERN STACK" and "FULL" start at the exact same point */
+  text-align: left; 
+  
+}
+
+.landing-info h3 {
+  font-size: 22px;
+  letter-spacing: 2px;
+  font-weight: 300;
+  color: #8e8c94;
+  margin: 0;
+  
+}
+
+/* Crisp & Visible MERN STACK */
+h2.landing-info-h2 {
+  color: #e04845;
+  font-size: 60px;
+  line-height: 58px;
+  margin: 0;
+  /* Removed negative margins so it aligns cleanly */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  white-space: nowrap;
+  text-shadow: 0 0 25px rgba(179, 38, 36, 0.6);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.05) 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.05) 90%, transparent 100%);
+  
+}
+
+/* The Front Overlapping Layer: FULL-STACK DEVELOPER */
+.landing-info h2.landing-front-h2 {
+  margin: 0;
+  margin-top: -24px;
+  /* Removed negative margins so it aligns cleanly */
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 44px;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: flex-start; /* Aligns to the start/left */
+  flex-wrap: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  color: #ededef;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  
+}
+
+@media screen and (max-width: 1400px) {
+  .landing-intro h1 {
+    font-size: 38px;
+    line-height: 38px;
+  }
+  h2.landing-info-h2 {
+    font-size: 50px;
+  }
+  .landing-info h2.landing-front-h2 {
+    font-size: 40px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media screen and (max-width: 1024px) {
+  .navbar-connect {
+    display: none;
+  }
+  .landing-intro {
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .landing-info {
+    top: 80%;
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
 }
