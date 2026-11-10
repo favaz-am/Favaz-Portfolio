@@ -233,6 +233,17 @@ export default function PortfolioHome() {
         <div className="character-center-stage">
         </div>
       </div>
+
+      {/* Section 2: About (100vh tall) */}
+        <section className="h-screen w-full flex flex-col justify-center items-end px-20">
+          <div className="max-w-xl text-right">
+            <h2 className="text-5xl font-bold text-white mb-6">ABOUT ME</h2>
+            <p className="text-xl text-gray-300">
+              I am a MERN stack developer and video editor. As you scroll, 
+              my avatar moves out of the way to make room for this text!
+            </p>
+          </div>
+        </section>
     </main>
   );
 }
