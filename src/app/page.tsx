@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import CustomCursor from "@/components/CustomCursor";
-import HeroTotem3D from "@/components/HeroTotem3D";
 import HeroAvatar from "@/components/HeroAvatar";
 
 // Exact HoverLinks component from Redoyan's src/components/HoverLinks.tsx
@@ -232,7 +231,6 @@ export default function PortfolioHome() {
         {/* Center 3D Totem + Burgundy Rim Glow */}
         <div className="character-rim" />
         <div className="character-center-stage">
-          <HeroTotem3D />
         </div>
       </div>
     </main>

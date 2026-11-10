@@ -1,6 +1,5 @@
 "use client";
 
-import HeroTotem3D from "@/components/HeroTotem3D";
 import { ArrowUpRight } from "lucide-react";
 
 function GithubSvg() {
