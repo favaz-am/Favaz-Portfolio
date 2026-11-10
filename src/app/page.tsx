@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import CustomCursor from "@/components/CustomCursor";
 import HeroTotem3D from "@/components/HeroTotem3D";
+import HeroAvatar from "@/components/HeroAvatar";
 
 // Exact HoverLinks component from Redoyan's src/components/HoverLinks.tsx
 function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
@@ -73,6 +74,7 @@ export default function PortfolioHome() {
   return (
     <main className="main-body">
       <CustomCursor />
+      <HeroAvatar/>
 
       {/* 1. TOP NAVBAR (Matches src/components/Navbar.tsx) */}
       <div className="header">
