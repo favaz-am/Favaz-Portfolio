@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import CustomCursor from "@/components/CustomCursor";
 import HeroAvatar from "@/components/HeroAvatar";
+import AboutSection from "@/components/AboutSection";
 
 // Exact HoverLinks component from Redoyan's src/components/HoverLinks.tsx
 function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
@@ -227,23 +228,21 @@ export default function PortfolioHome() {
             </h2>
           </div>
         </div>
-
-        {/* Center 3D Totem + Burgundy Rim Glow */}
+{/* Center 3D Totem + Burgundy Rim Glow */}
         <div className="character-rim" />
-        <div className="character-center-stage">
-        </div>
-      </div>
+        <div className="character-center-stage"></div>
+      </div> {/* <--- FIXED: THIS CLOSING DIV MOVED UP HERE TO CLOSE THE HERO SECTION! */}
 
-      {/* Section 2: About (100vh tall) */}
-        <section className="h-screen w-full flex flex-col justify-center items-end px-20">
-          <div className="max-w-xl text-right">
-            <h2 className="text-5xl font-bold text-white mb-6">ABOUT ME</h2>
-            <p className="text-xl text-gray-300">
-              I am a MERN stack developer and video editor. As you scroll, 
-              my avatar moves out of the way to make room for this text!
-            </p>
-          </div>
-        </section>
+    {/* 4. SCROLLABLE CONTENT */}
+      <div className="relative z-10 w-full">
+        
+        {/* Section 2: About */}
+        <AboutSection />
+
+        {/* Section 3: Spacer for Work/Typing stage */}
+        <section style={{ height: "100vh", width: "100%" }}></section>
+
+      </div>
     </main>
   );
 }

@@ -70,7 +70,7 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
       // --- STAGE 2: ABOUT ME (Close-up Chest & Head on Left Side) ---
       const aboutScale = 2.6
       const aboutY = -3.15
-      const aboutX = -0.85
+      const aboutX = -1.5
 
       // --- STAGE 3: WHAT I DO (Zoomed out to show full seated typing body) ---
       const workScale = 1.35
