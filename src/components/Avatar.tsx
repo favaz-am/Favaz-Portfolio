@@ -161,7 +161,7 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
           <skinnedMesh frustumCulled={false} name="AvatarEyelashes" geometry={nodes.AvatarEyelashes.geometry} material={skins.AvatarEyelashes} skeleton={nodes.AvatarEyelashes.skeleton} morphTargetDictionary={nodes.AvatarEyelashes.morphTargetDictionary} morphTargetInfluences={nodes.AvatarEyelashes.morphTargetInfluences} />
           <skinnedMesh frustumCulled={false} name="AvatarHead" geometry={nodes.AvatarHead.geometry} material={skins.AvatarHead} skeleton={nodes.AvatarHead.skeleton} morphTargetDictionary={nodes.AvatarHead.morphTargetDictionary} morphTargetInfluences={nodes.AvatarHead.morphTargetInfluences} />
           <skinnedMesh frustumCulled={false} name="AvatarTeethLower" geometry={nodes.AvatarTeethLower.geometry} material={skins.AvatarTeethLower} skeleton={nodes.AvatarTeethLower.skeleton} morphTargetDictionary={nodes.AvatarTeethLower.morphTargetDictionary} morphTargetInfluences={nodes.AvatarTeethLower.morphTargetInfluences} />
-        <DeskSetup />
+        <DeskSetup handNode={nodes.mixamorigRightHand || nodes.RightHand} />
         </group>
       </group>
     </group>
