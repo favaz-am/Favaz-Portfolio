@@ -525,3 +525,211 @@ h2.landing-info-h2 {
   transition: opacity 0.12s linear, transform 0.12s linear;
   will-change: opacity, transform;
 }
+
+/* =========================================
+   8. WHAT I DO SECTION (FULL-STACK ONLY)
+   ========================================= */
+.whatido-section {
+  width: 100%;
+  max-width: var(--cMaxWidth);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6%;
+  position: relative;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.whatido-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 3%;
+}
+
+.whatido-heading {
+  font-size: clamp(54px, 6.2vw, 96px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: 3px;
+  color: #ededef;
+  margin: 0;
+  user-select: none;
+}
+
+.whatido-accent {
+  color: var(--accentGlow, #e04845);
+}
+
+.whatido-right {
+  width: 100%;
+  max-width: 470px;
+  pointer-events: auto;
+}
+
+.whatido-card {
+  position: relative;
+  padding: 36px 34px 44px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  background: rgba(14, 13, 17, 0.55);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+.whatido-card:hover {
+  border-color: rgba(224, 72, 69, 0.55);
+  background: rgba(18, 15, 20, 0.72);
+}
+
+/* Crisp White Corner Brackets */
+.corner-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #ededef;
+  border-style: solid;
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+.whatido-card:hover .corner-bracket {
+  border-color: var(--accentGlow, #e04845);
+}
+
+.corner-bracket.top-left {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.corner-bracket.top-right {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+.corner-bracket.bottom-left {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+
+.corner-bracket.bottom-right {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.whatido-card-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #ededef;
+  margin: 0;
+}
+
+.whatido-card-subtitle {
+  font-size: 14px;
+  color: #8e8c94;
+  margin: 6px 0 0 0;
+  font-weight: 400;
+}
+
+.whatido-card-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #cfced4;
+  margin: 22px 0 0 0;
+}
+
+.whatido-skills-block {
+  margin-top: 24px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.whatido-card-open .whatido-skills-block {
+  max-height: 240px;
+  opacity: 1;
+}
+
+.whatido-skills-label {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #8e8c94;
+  margin: 0 0 12px 0;
+}
+
+.whatido-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.whatido-tag {
+  font-size: 12px;
+  color: #ededef;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.whatido-tag:hover {
+  border-color: var(--accentGlow, #e04845);
+  color: #ffffff;
+}
+
+.whatido-toggle-btn {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ededef;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.whatido-toggle-btn:hover {
+  border-color: var(--accentGlow, #e04845);
+  color: var(--accentGlow, #e04845);
+}
+
+.whatido-chevron {
+  transition: transform 0.3s ease;
+}
+
+.whatido-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 1024px) {
+  .whatido-section {
+    flex-direction: column;
+    justify-content: center;
+    gap: 36px;
+    padding: 120px 6% 80px;
+  }
+  .whatido-left {
+    padding-left: 0;
+    justify-content: center;
+    text-align: center;
+  }
+  .whatido-right {
+    max-width: 100%;
+  }
+}

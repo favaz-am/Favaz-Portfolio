@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import CustomCursor from "@/components/CustomCursor";
 import HeroAvatar from "@/components/HeroAvatar";
 import AboutSection from "@/components/AboutSection";
+import WhatIDoSection from "@/components/WhatIDo";
+import WhatIDo from "@/components/WhatIDo";
 
 // Exact HoverLinks component from Redoyan's src/components/HoverLinks.tsx
 function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
@@ -257,8 +259,8 @@ export default function PortfolioHome() {
         {/* Section 2: About */}
         <AboutSection />
 
-        {/* Section 3: Spacer for Work/Typing stage */}
-        <section style={{ height: "100vh", width: "100%" }}></section>
+       {/* Section 3: What I Do (Full-Stack) */}
+            <WhatIDo/>
 
       </div>
     </main>
