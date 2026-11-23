@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import { useGraph, useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF, SkeletonUtils } from 'three-stdlib'
+import DeskSetup from "./DeskSetup";
 
 type ActionName = 'AvatarRoot|mixamo.com|Layer0'
 interface GLTFAction extends THREE.AnimationClip { name: ActionName }
@@ -56,65 +57,83 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
 
   // 3. Frame loop: Multi-section Scroll Choreography + Cursor Tracking
   useFrame(() => {
-    const vh = scrollY.current // Exact number of screen heights scrolled
+    const vh = scrollY.current
+
+    // 0 -> 1 progress for the transition into the Work / Typing stage
+    const workProgress = THREE.MathUtils.clamp((vh - 2.2) / 0.8, 0, 1)
 
     if (group.current) {
       // Stage 1: Hero (0vh)
       const heroX = -0.3
       const heroY = -3.35
       const heroScale = 2.8
+      const heroRotY = 0
 
-      // Stage 2: About Me (Pinned from 1.0vh to 2.2vh)
+      // Stage 2: About Me (1.0vh -> 2.2vh)
       const aboutX = -0.95
       const aboutY = -3.15
       const aboutScale = 2.6
+      const aboutRotY = 0.12
 
-      // Stage 3: Work / Typing (Starts at 3.0vh+)
-      const workX = -0.3
+      // Stage 3: Work / Typing (3/4 angle facing the monitor)
+      const workX = -0.45
       const workY = -1.05
       const workScale = 1.35
+      const workRotY = 0.52
 
       let targetX = heroX
       let targetY = heroY
       let targetScale = heroScale
+      let targetRotY = heroRotY
 
       if (vh <= 1.0) {
-        // 0vh -> 1vh: Slide smoothly from Hero to About Me
         const t = THREE.MathUtils.clamp(vh, 0, 1)
         targetX = THREE.MathUtils.lerp(heroX, aboutX, t)
         targetY = THREE.MathUtils.lerp(heroY, aboutY, t)
         targetScale = THREE.MathUtils.lerp(heroScale, aboutScale, t)
+        targetRotY = THREE.MathUtils.lerp(heroRotY, aboutRotY, t)
       } else if (vh <= 2.2) {
-        // 1.0vh -> 2.2vh: Hold steady while the sticky About text illuminates
         targetX = aboutX
         targetY = aboutY
         targetScale = aboutScale
+        targetRotY = aboutRotY
       } else {
-        // 2.2vh -> 3.0vh: Zoom out to full typing pose for the Work section
-        const t = THREE.MathUtils.clamp((vh - 2.2) / 0.8, 0, 1)
-        targetX = THREE.MathUtils.lerp(aboutX, workX, t)
-        targetY = THREE.MathUtils.lerp(aboutY, workY, t)
-        targetScale = THREE.MathUtils.lerp(aboutScale, workScale, t)
+        targetX = THREE.MathUtils.lerp(aboutX, workX, workProgress)
+        targetY = THREE.MathUtils.lerp(aboutY, workY, workProgress)
+        targetScale = THREE.MathUtils.lerp(aboutScale, workScale, workProgress)
+        targetRotY = THREE.MathUtils.lerp(aboutRotY, workRotY, workProgress)
       }
 
       group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, targetX, 0.08)
       group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, targetY, 0.08)
+      group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetRotY, 0.08)
       const currentScale = THREE.MathUtils.lerp(group.current.scale.x, targetScale, 0.08)
       group.current.scale.set(currentScale, currentScale, currentScale)
     }
 
-    // --- HERO-ONLY CURSOR HEAD TRACKING ---
-    // Smoothly fades to 0 as you leave the Hero section (0vh -> 0.5vh)
-    const trackingWeight = THREE.MathUtils.clamp(1 - vh * 2, 0, 1)
+    // --- HEAD TRACKING (HERO) -> LOOK AT MONITOR (WHAT I DO) ---
+    const heroTrackingWeight = THREE.MathUtils.clamp(1 - vh * 2, 0, 1)
     const neck = nodes.mixamorigNeck || nodes.Neck || nodes.mixamorigHead || nodes.Head
     const spine = nodes.mixamorigSpine2 || nodes.Spine2
 
     if (neck) {
-      const targetX = -(mouse.current.y * Math.PI) / 5 * trackingWeight
-      const targetY = (mouse.current.x * Math.PI) / 5 * trackingWeight
+      // Hero: follow cursor | Work: look slightly down & forward at the monitor
+      const mouseX = -(mouse.current.y * Math.PI) / 5 * heroTrackingWeight
+      const mouseY = (mouse.current.x * Math.PI) / 5 * heroTrackingWeight
 
-      targetRotation.current.x = THREE.MathUtils.lerp(targetRotation.current.x, targetX, 0.1)
-      targetRotation.current.y = THREE.MathUtils.lerp(targetRotation.current.y, targetY, 0.1)
+      const monitorLookX = 0.22 * workProgress // Slight downward gaze at screen
+      const monitorLookY = 0.08 * workProgress // Slight turn into monitor
+
+      targetRotation.current.x = THREE.MathUtils.lerp(
+        targetRotation.current.x,
+        mouseX + monitorLookX,
+        0.1
+      )
+      targetRotation.current.y = THREE.MathUtils.lerp(
+        targetRotation.current.y,
+        mouseY + monitorLookY,
+        0.1
+      )
 
       neck.rotation.x += targetRotation.current.x
       neck.rotation.y += targetRotation.current.y
@@ -142,6 +161,7 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
           <skinnedMesh frustumCulled={false} name="AvatarEyelashes" geometry={nodes.AvatarEyelashes.geometry} material={skins.AvatarEyelashes} skeleton={nodes.AvatarEyelashes.skeleton} morphTargetDictionary={nodes.AvatarEyelashes.morphTargetDictionary} morphTargetInfluences={nodes.AvatarEyelashes.morphTargetInfluences} />
           <skinnedMesh frustumCulled={false} name="AvatarHead" geometry={nodes.AvatarHead.geometry} material={skins.AvatarHead} skeleton={nodes.AvatarHead.skeleton} morphTargetDictionary={nodes.AvatarHead.morphTargetDictionary} morphTargetInfluences={nodes.AvatarHead.morphTargetInfluences} />
           <skinnedMesh frustumCulled={false} name="AvatarTeethLower" geometry={nodes.AvatarTeethLower.geometry} material={skins.AvatarTeethLower} skeleton={nodes.AvatarTeethLower.skeleton} morphTargetDictionary={nodes.AvatarTeethLower.morphTargetDictionary} morphTargetInfluences={nodes.AvatarTeethLower.morphTargetInfluences} />
+        <DeskSetup />
         </group>
       </group>
     </group>
