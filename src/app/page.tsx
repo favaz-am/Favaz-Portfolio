@@ -17,7 +17,7 @@ function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
 }
 
 export default function PortfolioHome() {
-  // Exact Magnetic Social Icon Physics from Redoyan's src/components/SocialIcons.tsx
+  //Magnetic Social Icon Physics
   useEffect(() => {
     const social = document.getElementById("social");
     if (!social) return;
@@ -69,6 +69,24 @@ export default function PortfolioHome() {
     });
 
     return () => cleanups.forEach((fn) => fn());
+  }, []);
+
+  // Scroll-linked Hero text fade-out
+  useEffect(() => {
+    const landingDiv = document.getElementById("landingDiv");
+    if (!landingDiv) return;
+
+    const handleScroll = () => {
+      // Completes fade-out by 45% of the first screen height
+      const progress = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.45), 0), 1);
+      landingDiv.style.setProperty("--hero-opacity", `${1 - progress}`);
+      landingDiv.style.setProperty("--hero-shift", `${-progress * 45}px`);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (

@@ -39,11 +39,9 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
       mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1
     }
     
-    const handleScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      if (maxScroll > 0) {
-        scrollY.current = window.scrollY / maxScroll
-      }
+  const handleScroll = () => {
+      // 0 = top of Hero, 1 = About pins to top, 2.2 = About finishes & unpins
+      scrollY.current = window.scrollY / window.innerHeight
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -58,61 +56,66 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
 
   // 3. Frame loop: Multi-section Scroll Choreography + Cursor Tracking
   useFrame(() => {
+    const vh = scrollY.current // Exact number of screen heights scrolled
+
     if (group.current) {
-      const s = scrollY.current // 0.0 at top, 0.5 at middle, 1.0 at bottom
-
-      // --- STAGE 1: HERO PORTRAIT (Close-up Chest & Head in Center) ---
-      // TWEAK THESE Two Numbers if you want your initial Hero view slightly higher/lower or bigger/smaller:
-      const heroScale = 2.8
-      const heroY = -3.35 // More negative (e.g. -3.5) pushes head DOWN; less negative (e.g. -3.1) pulls body UP
+      // Stage 1: Hero (0vh)
       const heroX = -0.3
+      const heroY = -3.35
+      const heroScale = 2.8
 
-      // --- STAGE 2: ABOUT ME (Close-up Chest & Head on Left Side) ---
-      const aboutScale = 2.6
+      // Stage 2: About Me (Pinned from 1.0vh to 2.2vh)
+      const aboutX = -0.95
       const aboutY = -3.15
-      const aboutX = -1.5
+      const aboutScale = 2.6
 
-      // --- STAGE 3: WHAT I DO (Zoomed out to show full seated typing body) ---
-      const workScale = 1.35
-      const workY = -1.05
+      // Stage 3: Work / Typing (Starts at 3.0vh+)
       const workX = -0.3
+      const workY = -1.05
+      const workScale = 1.35
 
       let targetX = heroX
       let targetY = heroY
       let targetScale = heroScale
 
-      if (s <= 0.5) {
-        // Transition from Hero (0.0) to About (0.5)
-        const progress = s * 2 // normalize 0..0.5 to 0..1
-        targetX = THREE.MathUtils.lerp(heroX, aboutX, progress)
-        targetY = THREE.MathUtils.lerp(heroY, aboutY, progress)
-        targetScale = THREE.MathUtils.lerp(heroScale, aboutScale, progress)
+      if (vh <= 1.0) {
+        // 0vh -> 1vh: Slide smoothly from Hero to About Me
+        const t = THREE.MathUtils.clamp(vh, 0, 1)
+        targetX = THREE.MathUtils.lerp(heroX, aboutX, t)
+        targetY = THREE.MathUtils.lerp(heroY, aboutY, t)
+        targetScale = THREE.MathUtils.lerp(heroScale, aboutScale, t)
+      } else if (vh <= 2.2) {
+        // 1.0vh -> 2.2vh: Hold steady while the sticky About text illuminates
+        targetX = aboutX
+        targetY = aboutY
+        targetScale = aboutScale
       } else {
-        // Transition from About (0.5) to Work/Typing (1.0)
-        const progress = (s - 0.5) * 2 // normalize 0.5..1.0 to 0..1
-        targetX = THREE.MathUtils.lerp(aboutX, workX, progress)
-        targetY = THREE.MathUtils.lerp(aboutY, workY, progress)
-        targetScale = THREE.MathUtils.lerp(aboutScale, workScale, progress)
+        // 2.2vh -> 3.0vh: Zoom out to full typing pose for the Work section
+        const t = THREE.MathUtils.clamp((vh - 2.2) / 0.8, 0, 1)
+        targetX = THREE.MathUtils.lerp(aboutX, workX, t)
+        targetY = THREE.MathUtils.lerp(aboutY, workY, t)
+        targetScale = THREE.MathUtils.lerp(aboutScale, workScale, t)
       }
 
-      // Smoothly apply position and scale
       group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, targetX, 0.08)
       group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, targetY, 0.08)
       const currentScale = THREE.MathUtils.lerp(group.current.scale.x, targetScale, 0.08)
       group.current.scale.set(currentScale, currentScale, currentScale)
     }
 
-    // --- CURSOR HEAD TRACKING ---
+    // --- HERO-ONLY CURSOR HEAD TRACKING ---
+    // Smoothly fades to 0 as you leave the Hero section (0vh -> 0.5vh)
+    const trackingWeight = THREE.MathUtils.clamp(1 - vh * 2, 0, 1)
     const neck = nodes.mixamorigNeck || nodes.Neck || nodes.mixamorigHead || nodes.Head
     const spine = nodes.mixamorigSpine2 || nodes.Spine2
 
     if (neck) {
-      const targetX = -(mouse.current.y * Math.PI) / 5
-      const targetY = (mouse.current.x * Math.PI) / 5
-      
+      const targetX = -(mouse.current.y * Math.PI) / 5 * trackingWeight
+      const targetY = (mouse.current.x * Math.PI) / 5 * trackingWeight
+
       targetRotation.current.x = THREE.MathUtils.lerp(targetRotation.current.x, targetX, 0.1)
       targetRotation.current.y = THREE.MathUtils.lerp(targetRotation.current.y, targetY, 0.1)
-      
+
       neck.rotation.x += targetRotation.current.x
       neck.rotation.y += targetRotation.current.y
 
