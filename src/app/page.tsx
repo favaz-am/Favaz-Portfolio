@@ -6,6 +6,7 @@ import HeroAvatar from "@/components/HeroAvatar";
 import AboutSection from "@/components/AboutSection";
 import WhatIDo from "@/components/WhatIDo";
 import Career from "@/components/Career";
+import MyWork from "@/components/MyWork";
 
 // Exact HoverLinks component from Redoyan's src/components/HoverLinks.tsx
 function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
@@ -264,7 +265,10 @@ export default function PortfolioHome() {
 
         
        {/* Section 4: Career & Experience */}
-         <Career/>    
+         <Career/>   
+
+        {/* Section 5: My Work */}
+         <MyWork /> 
 
       </div>
     </main>

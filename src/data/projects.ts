@@ -10,6 +10,8 @@ export interface ProjectItem {
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string; // Add your deployed URL here once German Exam AI is live!
+  image?: string; // Add "/projects/your-image.png" once screenshots are ready
+  gradient?: string; // Temporary visual placeholder until real images are added
   caseStudy?: {
     problem: string;
     architecture: string[];
@@ -26,11 +28,20 @@ export const PROJECTS: ProjectItem[] = [
     statusLabel: "Commercial Build — Deploying Soon",
     isPrivateCommercial: true,
     liveUrl: "", // Paste your live URL here in a few days (e.g. "https://german-exam.vercel.app")
+    image: "",
+    gradient: "linear-gradient(135deg, #2b1015 0%, #5c1922 50%, #141218 100%)",
     description:
       "A commercial language proficiency examination platform built in Next.js featuring timed modules, AI-driven evaluation workflows, and strict exam state persistence.",
     architectureHighlight:
       "Next.js App Router frontend with modular assessment state management and protected commercial API routes.",
-    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "AI Evaluation", "MongoDB"],
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Node.js",
+      "AI Evaluation",
+      "MongoDB",
+    ],
     caseStudy: {
       problem:
         "Language learners preparing for standardized German exams lack realistic, timed mock environments that provide instant, structured AI grading on writing and comprehension modules.",
@@ -50,11 +61,20 @@ export const PROJECTS: ProjectItem[] = [
     progress: 65,
     statusLabel: "Active Build (v0.7)",
     isPrivateCommercial: true,
+    image: "",
+    gradient: "linear-gradient(135deg, #161829 0%, #3b1d2e 55%, #0f0e14 100%)",
     description:
       "An interactive 3D digital companion with decoupled frontend and backend environments, real-time facial blendshape reactions, and conversational memory.",
     architectureHighlight:
       "Decoupled React Three Fiber canvas syncing real-time AI emotional states from a Node/Express backend.",
-    techStack: ["React", "Three.js", "TypeScript", "Node.js", "Express", "ARKit Blendshapes"],
+    techStack: [
+      "React",
+      "Three.js",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "ARKit Blendshapes",
+    ],
     caseStudy: {
       problem:
         "Standard web chatbots feel static and lifeless. Bridging LLM responses with real-time 3D character animation in the browser requires tight state synchronization without dropping below 60 FPS.",
@@ -74,6 +94,8 @@ export const PROJECTS: ProjectItem[] = [
     progress: 80,
     statusLabel: "Public Repo — Core Complete",
     isPrivateCommercial: false,
+    image: "",
+    gradient: "linear-gradient(135deg, #1f1216 0%, #4a151b 50%, #100f14 100%)",
     description:
       "A scalable e-commerce cart and product management system demonstrating clean state synchronization, dynamic pricing calculations, and responsive checkout flows.",
     architectureHighlight:
