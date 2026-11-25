@@ -80,6 +80,7 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
       const workY = -1.05
       const workScale = 1.35
       const workRotY = 0.52
+      
 
       let targetX = heroX
       let targetY = heroY
@@ -103,6 +104,22 @@ export default function Avatar(props: JSX.IntrinsicElements['group']) {
         targetScale = THREE.MathUtils.lerp(aboutScale, workScale, workProgress)
         targetRotY = THREE.MathUtils.lerp(aboutRotY, workRotY, workProgress)
       }
+
+    
+    
+      let exitOffsetY = 0
+      const workSection = document.getElementById("work")
+      if (workSection) {
+        const rect = workSection.getBoundingClientRect()
+        if (rect.bottom < window.innerHeight) {
+          const scrolledUpRatio = (window.innerHeight - rect.bottom) / window.innerHeight
+          exitOffsetY = scrolledUpRatio * 2.02
+        }
+      }
+      targetY += exitOffsetY
+
+      const ySmooth = exitOffsetY > 0 ? 0.35 : 0.08
+      group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, targetY, ySmooth)
 
       group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, targetX, 0.08)
       group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, targetY, 0.08)

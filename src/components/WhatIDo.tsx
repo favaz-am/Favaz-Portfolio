@@ -53,8 +53,7 @@ export default function WhatIDo() {
       const rect = track.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const pinnedDistance = track.offsetHeight - windowHeight;
-
-      // 1. ENTER PROGRESS (0 -> 1 as section rises into the viewport)
+// 1. ENTER PROGRESS (0 -> 1 as section rises into the viewport)
       const enterStart = windowHeight * 0.85;
       const enterEnd = windowHeight * 0.05;
       const enterProgress = Math.min(
@@ -62,19 +61,21 @@ export default function WhatIDo() {
         1
       );
 
-      // 2. EXIT PROGRESS (0 -> 1 during the final 25% of the pinned runway)
+      // 2. EXIT PROGRESS (Synced to the exact moment #work unpins & moves upward with the Avatar)
       let exitProgress = 0;
-      if (pinnedDistance > 0 && rect.top < 0) {
-        const rawPinned = Math.min(Math.max(-rect.top / pinnedDistance, 0), 1);
-        exitProgress = Math.min(Math.max((rawPinned - 0.75) / 0.25, 0), 1);
+      if (rect.bottom < windowHeight) {
+        // Completes shatter/tilt over the first 65% of the upward scroll
+        exitProgress = Math.min(
+          Math.max((windowHeight - rect.bottom) / (windowHeight * 0.65), 0),
+          1
+        );
       }
 
-      // Animate "WHAT I DO" letters (shatter + bounce in -> scatter + fade out)
+      // Animate "WHAT I DO" letters (shatter + bounce in -> shatter outward while moving up)
       ALL_LETTERS.forEach((item, index) => {
         const span = letterRefs.current[index];
         if (!span || item.char === "\u00A0") return;
 
-        // Stagger each letter slightly on entrance
         const stagger = index * 0.055;
         const localEnter = Math.min(
           Math.max((enterProgress - stagger) / (1 - stagger), 0),
@@ -82,33 +83,35 @@ export default function WhatIDo() {
         );
         const bounced = easeOutBack(localEnter);
 
-        // Enter offsets shrink to 0; Exit offsets drift outward & upward
         const enterX = item.x * (1 - bounced);
         const enterY = item.y * (1 - bounced);
         const enterRot = item.r * (1 - bounced);
 
-        const exitX = item.x * 0.45 * exitProgress;
-        const exitY = (-45 + item.y * 0.35) * exitProgress;
-        const exitRot = item.r * 0.6 * exitProgress;
+        // Shatter outward as the section scrolls upward
+        const exitX = item.x * 0.65 * exitProgress;
+        const exitY = item.y * 0.45 * exitProgress;
+        const exitRot = item.r * 0.85 * exitProgress;
 
-        const scale = (0.65 + 0.35 * bounced) * (1 - exitProgress * 0.15);
+        const scale = (0.65 + 0.35 * bounced) * (1 - exitProgress * 0.18);
         const opacity = Math.min(localEnter * 1.6, 1) * (1 - exitProgress);
 
         span.style.transform = `translate3d(${enterX + exitX}px, ${enterY + exitY}px, 0) rotate(${enterRot + exitRot}deg) scale(${scale})`;
         span.style.opacity = `${opacity}`;
       });
 
-      // Animate "FULL-STACK" Card (slide/bounce in from right -> fade/lift out)
+      // Animate "FULL-STACK" Card (slide/bounce in -> 3D tilt + slide right while moving up)
       if (cardRef.current) {
         const cardEnter = Math.min(Math.max((enterProgress - 0.15) / 0.85, 0), 1);
         const cardBounced = easeOutBack(cardEnter);
 
-        const translateX = 70 * (1 - cardBounced) + 30 * exitProgress;
-        const translateY = 25 * (1 - cardBounced) - 45 * exitProgress;
-        const scale = (0.92 + 0.08 * cardBounced) * (1 - exitProgress * 0.05);
+        const translateX = 70 * (1 - cardBounced) + 45 * exitProgress;
+        const translateY = 25 * (1 - cardBounced);
+        const rotateY = -12 * exitProgress;
+        const rotateX = 8 * exitProgress;
+        const scale = (0.92 + 0.08 * cardBounced) * (1 - exitProgress * 0.08);
         const opacity = Math.min(cardEnter * 1.4, 1) * (1 - exitProgress);
 
-        cardRef.current.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
+        cardRef.current.style.transform = `perspective(900px) translate3d(${translateX}px, ${translateY}px, 0) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(${scale})`;
         cardRef.current.style.opacity = `${opacity}`;
       }
     };
