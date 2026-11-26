@@ -31,38 +31,34 @@
   height: 50px;
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .social-icons a {
-  --siLeft: 50%;
-  --siTop: 50%;
-  position: absolute;
-  left: var(--siLeft, 50%);
-  top: var(--siTop, 50%);
-  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   color: #8e8c94;
-  will-change: left, top;
-  transition: transform 0.25s ease-out, color 0.3s ease, filter 0.3s ease;
+  will-change: transform;
+  transition: color 0.3s ease;
 }
 
 .social-icons:hover a {
   color: #B32624;
 }
 
-.social-icons a:hover {
-  color: #B32624;
-  transform: scale(1.15);
-}
-
 .social-icons a svg {
   width: 24px !important;
   height: 24px !important;
   display: block;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.social-icons a:hover svg {
+  transform: scale(1.18);
 }
 
 .resume-button {
