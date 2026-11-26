@@ -43,23 +43,9 @@ export default function WhatIDo() {
   const trackRef = useRef<HTMLElement>(null);
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
+  const wasVisibleRef = useRef(false);
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     let rafId = 0;
@@ -77,6 +63,14 @@ export default function WhatIDo() {
         Math.max((enterStart - rect.top) / (enterStart - enterEnd), 0),
         1
       );
+      
+      if (enterProgress >= 0.65 && !wasVisibleRef.current) {
+        wasVisibleRef.current = true;
+        setIsVisible(true);
+      } else if (enterProgress <= 0.05 && wasVisibleRef.current) {
+        wasVisibleRef.current = false;
+        setIsVisible(false);
+      }
 
       let exitProgress = 0;
       if (rect.bottom < windowHeight) {
