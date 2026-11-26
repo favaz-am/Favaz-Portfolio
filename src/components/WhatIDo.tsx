@@ -15,7 +15,6 @@ const FULL_STACK_SKILLS = [
   "Git & GitHub",
 ];
 
-// Deterministic shatter vectors [x, y, rotationDeg] for each letter (no hydration mismatch)
 const LINE_1 = [
   { char: "W", x: -75, y: -55, r: -28 },
   { char: "H", x: -25, y: 65, r: 22 },
@@ -32,7 +31,6 @@ const LINE_2 = [
 
 const ALL_LETTERS = [...LINE_1, ...LINE_2];
 
-// Overshoot bounce easing for the snap-in effect
 function easeOutBack(t: number): number {
   const c1 = 1.70158;
   const c3 = c1 + 1;
@@ -41,42 +39,58 @@ function easeOutBack(t: number): number {
 
 export default function WhatIDo() {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const trackRef = useRef<HTMLElement>(null);
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let rafId = 0;
+
+    const updateScroll = () => {
       const track = trackRef.current;
       if (!track) return;
 
       const rect = track.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      const pinnedDistance = track.offsetHeight - windowHeight;
-// 1. ENTER PROGRESS (0 -> 1 as section rises into the viewport)
-      const enterStart = windowHeight * 0.85;
-      const enterEnd = windowHeight * 0.05;
+
+      const enterStart = windowHeight * 0.98;
+      const enterEnd = windowHeight * 0.2;
       const enterProgress = Math.min(
         Math.max((enterStart - rect.top) / (enterStart - enterEnd), 0),
         1
       );
 
-      // 2. EXIT PROGRESS (Synced to the exact moment #work unpins & moves upward with the Avatar)
       let exitProgress = 0;
       if (rect.bottom < windowHeight) {
-        // Completes shatter/tilt over the first 65% of the upward scroll
         exitProgress = Math.min(
-          Math.max((windowHeight - rect.bottom) / (windowHeight * 0.65), 0),
+          Math.max((windowHeight - rect.bottom) / (windowHeight * 0.42), 0),
           1
         );
       }
 
-      // Animate "WHAT I DO" letters (shatter + bounce in -> shatter outward while moving up)
       ALL_LETTERS.forEach((item, index) => {
         const span = letterRefs.current[index];
         if (!span || item.char === "\u00A0") return;
 
-        const stagger = index * 0.055;
+        const stagger = index * 0.045;
         const localEnter = Math.min(
           Math.max((enterProgress - stagger) / (1 - stagger), 0),
           1
@@ -87,10 +101,9 @@ export default function WhatIDo() {
         const enterY = item.y * (1 - bounced);
         const enterRot = item.r * (1 - bounced);
 
-        // Shatter outward as the section scrolls upward
-        const exitX = item.x * 0.65 * exitProgress;
-        const exitY = item.y * 0.45 * exitProgress;
-        const exitRot = item.r * 0.85 * exitProgress;
+        const exitX = item.x * 0.55 * exitProgress;
+        const exitY = item.y * 0.35 * exitProgress;
+        const exitRot = item.r * 0.75 * exitProgress;
 
         const scale = (0.65 + 0.35 * bounced) * (1 - exitProgress * 0.18);
         const opacity = Math.min(localEnter * 1.6, 1) * (1 - exitProgress);
@@ -99,33 +112,44 @@ export default function WhatIDo() {
         span.style.opacity = `${opacity}`;
       });
 
-      // Animate "FULL-STACK" Card (slide/bounce in -> 3D tilt + slide right while moving up)
       if (cardRef.current) {
-        const cardEnter = Math.min(Math.max((enterProgress - 0.15) / 0.85, 0), 1);
+        const cardEnter = Math.min(Math.max((enterProgress - 0.1) / 0.9, 0), 1);
         const cardBounced = easeOutBack(cardEnter);
 
-        const translateX = 70 * (1 - cardBounced) + 45 * exitProgress;
-        const translateY = 25 * (1 - cardBounced);
-        const rotateY = -12 * exitProgress;
-        const rotateX = 8 * exitProgress;
-        const scale = (0.92 + 0.08 * cardBounced) * (1 - exitProgress * 0.08);
-        const opacity = Math.min(cardEnter * 1.4, 1) * (1 - exitProgress);
+        const translateX = 60 * (1 - cardBounced) + 40 * exitProgress;
+        const translateY = 20 * (1 - cardBounced);
+        const rotateY = -10 * exitProgress;
+        const rotateX = 6 * exitProgress;
+        const scale = (0.94 + 0.06 * cardBounced) * (1 - exitProgress * 0.08);
+        const opacity = Math.min(cardEnter * 1.5, 1) * (1 - exitProgress);
 
         cardRef.current.style.transform = `perspective(900px) translate3d(${translateX}px, ${translateY}px, 0) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(${scale})`;
         cardRef.current.style.opacity = `${opacity}`;
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateScroll);
+    };
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateScroll();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
-    <section id="work" ref={trackRef} className="whatido-scroll-track">
+    <section
+      id="work"
+      ref={trackRef}
+      className={`whatido-scroll-track ${isVisible ? "is-visible" : ""}`}
+    >
       <div className="whatido-section">
-        {/* Left: Shatter & Bounce "WHAT I DO" Typography */}
+        {/* Left: Shatter Typography */}
         <div className="whatido-left">
           <h2 className="whatido-heading">
             <span className="whatido-line">
@@ -158,7 +182,7 @@ export default function WhatIDo() {
           </h2>
         </div>
 
-        {/* Right: Animated Dashed Corner-Bracketed Full-Stack Card */}
+        {/* Right: Full-Stack Card */}
         <div className="whatido-right">
           <div
             ref={cardRef}
@@ -166,32 +190,48 @@ export default function WhatIDo() {
             style={{ willChange: "transform, opacity" }}
             onClick={() => setIsExpanded((prev) => !prev)}
           >
+            <div className="what-border2" aria-hidden="true">
+              <svg width="100%" height="100%">
+                <line x1="0" y1="0" x2="0" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
+                <line x1="100%" y1="0" x2="100%" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="7,7" />
+              </svg>
+            </div>
+
+            <div className="what-border1" aria-hidden="true">
+              <svg width="100%" height="100%">
+                <line x1="0" y1="0" x2="100%" y2="0" stroke="white" strokeWidth="2" strokeDasharray="6,6" />
+                <line x1="0" y1="100%" x2="100%" y2="100%" stroke="white" strokeWidth="2" strokeDasharray="6,6" />
+              </svg>
+            </div>
+
             <span className="corner-bracket top-left" />
             <span className="corner-bracket top-right" />
             <span className="corner-bracket bottom-left" />
             <span className="corner-bracket bottom-right" />
 
-            <div className="whatido-card-header">
-              <h3 className="whatido-card-title">FULL-STACK</h3>
-              <p className="whatido-card-subtitle">
-                Modern web development &amp; scalable applications
+            <div className="whatido-card-inner">
+              <div className="whatido-card-header">
+                <h3 className="whatido-card-title">FULL-STACK</h3>
+                <p className="whatido-card-subtitle">
+                  Modern web development &amp; scalable applications
+                </p>
+              </div>
+
+              <p className="whatido-card-desc">
+                Building responsive, high-performance web applications using the
+                MERN stack, Next.js, and TypeScript. Architecting clean backend
+                APIs and pairing them with interactive, modern UI/UX experiences.
               </p>
-            </div>
 
-            <p className="whatido-card-desc">
-              Building responsive, high-performance web applications using the
-              MERN stack, Next.js, and TypeScript. Architecting clean backend APIs
-              and pairing them with interactive, modern UI/UX experiences.
-            </p>
-
-            <div className="whatido-skills-block">
-              <p className="whatido-skills-label">Skillset &amp; tools</p>
-              <div className="whatido-tags">
-                {FULL_STACK_SKILLS.map((skill) => (
-                  <span key={skill} className="whatido-tag">
-                    {skill}
-                  </span>
-                ))}
+              <div className="whatido-skills-block">
+                <p className="whatido-skills-label">Skillset &amp; tools</p>
+                <div className="whatido-tags">
+                  {FULL_STACK_SKILLS.map((skill) => (
+                    <span key={skill} className="whatido-tag">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -199,6 +239,10 @@ export default function WhatIDo() {
               type="button"
               className="whatido-toggle-btn"
               aria-label={isExpanded ? "Collapse details" : "Expand details"}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded((prev) => !prev);
+              }}
             >
               <svg
                 width="14"
