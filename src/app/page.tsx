@@ -8,6 +8,7 @@ import WhatIDo from "@/components/WhatIDo";
 import Career from "@/components/Career";
 import MyWork from "@/components/MyWork";
 import TechStack from "@/components/TechStack";
+import Contact from "@/components/Contact";
 
 function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
   return (
@@ -271,7 +272,10 @@ export default function PortfolioHome() {
          <MyWork /> 
 
         {/* Section 6: Tech Stack */}
-         <TechStack />
+         <TechStack />      
+
+        {/* Section 7: Contact */}
+          <Contact />
 
 
         </div>
