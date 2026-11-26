@@ -3,61 +3,118 @@
    ========================================= */
 .about-scroll-track {
   width: 100%;
-  height: 260vh;
+  height: 220vh;
   position: relative;
   z-index: 20;
 }
 
-.about-wrapper {
+.about-section {
   position: sticky;
   top: 0;
-  width: 100%;
-  max-width: var(--cMaxWidth);
-  margin: 0 auto;
-  height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 60px 7% 4vh 7%;
+  justify-content: left;
+  width: var(--cWidth);
+  max-width: var(--cMaxWidth);
+  height: var(--vh);
+  margin: auto;
 }
 
-.about-content {
+.about-me {
   width: 100%;
-  max-width: 560px;
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
+  max-width: calc(100% - 15px);
+  padding: 40px 0 0;
+  will-change: opacity, transform;
 }
 
 .about-title {
   font-size: 18px;
-  letter-spacing: 8px;
-  color: var(--accentGlow, #e04845);
-  font-weight: 600;
-  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: 400;
+  color: var(--accentGlow);
+  margin: 0 0 18px 0;
 }
 
-.about-text {
+.about-para {
   font-size: 20px;
-  line-height: 1.65;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.5px;
+  word-spacing: 2px;
   color: #ededef;
-  font-weight: 500;
   margin: 0;
 }
 
-.scroll-word {
-  opacity: 0.16;
-  transition: opacity 0.08s linear;
-  will-change: opacity;
+.about-para-secondary {
+  margin-top: 22px;
 }
 
-@media screen and (max-width: 1024px) {
-  .about-wrapper {
+.about-me .split-word {
+  display: inline-block;
+  margin-right: 0.28em;
+  opacity: 0.14;
+  transform: translate3d(0, 18px, 0);
+  will-change: opacity, transform;
+}
+
+@media only screen and (min-width: 600px) {
+  .about-section {
     justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 12vh;
   }
-  .about-content {
-    text-align: center;
+
+  .about-me {
+    width: 500px;
+  }
+
+  .about-title {
+    font-size: 22px;
+    letter-spacing: 6px;
+  }
+
+  .about-para {
+    font-size: 26px;
+    line-height: 33px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .about-me {
+    width: 520px;
+    max-width: calc(100% - 70px);
+  }
+
+  .about-title {
+    font-size: 25px;
+    letter-spacing: 7px;
+  }
+
+  .about-para {
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .about-section {
+    justify-content: flex-end;
+    padding: 0;
+  }
+
+  .about-me {
+    padding: 0;
+    width: 50%;
+  }
+
+  .about-para {
+    font-size: 1.85vw;
+    line-height: 2.3vw;
+  }
+}
+
+@media only screen and (min-width: 1950px) {
+  .about-para {
+    font-size: 2.4rem;
+    line-height: 2.8rem;
   }
 }
