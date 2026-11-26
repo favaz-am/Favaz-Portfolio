@@ -1,0 +1,370 @@
+/* =========================================
+   9. MY WORK & ALL WORKS (/myworks)
+   ========================================= */
+.mywork-scroll-runway {
+  width: 100%;
+  height: 190vh;
+  position: relative;
+  z-index: 25;
+}
+
+.mywork-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: 76px;
+}
+
+.mywork-header {
+  width: 100%;
+  max-width: var(--cMaxWidth);
+  margin: 0 auto;
+  padding: 12px 6% 24px;
+}
+
+.mywork-heading {
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.mywork-accent {
+  color: #e04845;
+}
+
+.mywork-viewport {
+  flex: 1;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+}
+
+.mywork-track {
+  display: flex;
+  height: 100%;
+  padding-left: clamp(76px, 6vw, 110px);
+  will-change: transform;
+}
+
+.mywork-slide {
+  flex: 0 0 42vw;
+  min-width: 440px;
+  max-width: 620px;
+  height: 100%;
+  padding: 32px 42px 56px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.mywork-info-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.mywork-num {
+  font-size: clamp(2.2rem, 3.2vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.mywork-title-group {
+  text-align: right;
+}
+
+.mywork-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px;
+}
+
+.mywork-cat {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.52);
+  margin: 0;
+}
+
+.mywork-tools-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 6px;
+}
+
+.mywork-tools-list {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.58);
+  margin: 0;
+}
+
+.mywork-visual {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9.5;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  text-decoration: none;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
+}
+
+.mywork-visual:hover {
+  transform: translateY(-4px) scale(1.015);
+  border-color: rgba(224, 72, 69, 0.65);
+}
+
+.mywork-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mywork-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.mywork-placeholder-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #e04845;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.mywork-placeholder-title {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px;
+}
+
+.mywork-placeholder-sub {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.mywork-cta-slide {
+  flex: 0 0 38vw;
+  min-width: 360px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.mywork-cta-content {
+  text-align: center;
+  max-width: 320px;
+}
+
+.mywork-cta-title {
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 12px;
+}
+
+.mywork-cta-sub {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.58);
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
+
+.mywork-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 999px;
+  background: #e04845;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 28px rgba(224, 72, 69, 0.35);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mywork-cta-btn:hover {
+  background: #f05552;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px rgba(224, 72, 69, 0.5);
+}
+
+/* ALL WORKS PAGE (/myworks) */
+.allworks-page {
+  min-height: 100vh;
+  background: #0b0a0e;
+  color: #ffffff;
+  padding: 72px 6% 120px;
+}
+
+.allworks-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.allworks-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.allworks-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+.allworks-back-btn:hover {
+  border-color: #e04845;
+  color: #ffffff;
+  background: rgba(224, 72, 69, 0.1);
+}
+
+.allworks-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.allworks-title {
+  font-size: clamp(2.8rem, 5vw, 4.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+
+.allworks-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.58);
+  margin: 0;
+}
+
+.allworks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.allworks-card {
+  display: flex;
+  flex-direction: column;
+  background: #131218;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.allworks-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(224, 72, 69, 0.55);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+}
+
+.allworks-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.allworks-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(11, 10, 14, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffffff;
+  backdrop-filter: blur(6px);
+}
+
+.allworks-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.allworks-body {
+  padding: 22px 24px 26px;
+}
+
+.allworks-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 6px;
+}
+
+.allworks-card-cat {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e04845;
+  margin: 0 0 12px;
+}
+
+.allworks-card-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .allworks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .mywork-slide {
+    flex: 0 0 86vw;
+    min-width: 300px;
+    padding: 24px;
+  }
+
+  .allworks-grid {
+    grid-template-columns: 1fr;
+  }
+}

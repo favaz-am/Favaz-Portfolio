@@ -1,0 +1,89 @@
+/* =========================================
+   2. SLIDING HOVER LINKS
+   ========================================= */
+.hover-link {
+  position: relative;
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.hover-in {
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.hover-in div {
+  display: flex;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  color: var(--accentGlow);
+}
+
+.hover-link:hover .hover-in {
+  transform: translateY(-100%);
+  color: var(--accentGlow);
+}
+
+/* =========================================
+   3. TOP NAVBAR
+   ========================================= */
+.header {
+  display: flex;
+  max-width: var(--cMaxWidth);
+  width: var(--cWidth);
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 0px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  z-index: 9999;
+}
+
+.navbar-title {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #ededef;
+}
+
+.navbar-connect {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  color: #8e8c94;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.navbar-connect:hover {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(224, 72, 69, 0.8);
+}
+
+.header ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 60px;
+  font-size: 14px;
+}
+
+.header ul li {
+  letter-spacing: 1.5px;
+  color: #ededef;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+  .navbar-connect {
+    display: none;
+  }
+}
