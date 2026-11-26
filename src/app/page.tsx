@@ -7,8 +7,8 @@ import AboutSection from "@/components/AboutSection";
 import WhatIDo from "@/components/WhatIDo";
 import Career from "@/components/Career";
 import MyWork from "@/components/MyWork";
+import TechStack from "@/components/TechStack";
 
-// Exact HoverLinks component from Redoyan's src/components/HoverLinks.tsx
 function HoverLinks({ text, cursor }: { text: string; cursor?: boolean }) {
   return (
     <div className="hover-link" data-cursor={!cursor ? "disable" : undefined}>
@@ -270,7 +270,11 @@ export default function PortfolioHome() {
         {/* Section 5: My Work */}
          <MyWork /> 
 
-      </div>
+        {/* Section 6: Tech Stack */}
+         <TechStack />
+
+
+        </div>
     </main>
   );
 }
