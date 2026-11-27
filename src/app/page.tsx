@@ -83,6 +83,16 @@ export default function PortfolioHome() {
             </h1>
           </div>
 
+          {/* Mobile-only portrait (hidden on desktop >= 1024px) */}
+          <div className="mobile-portrait-wrap">
+            <div className="mobile-portrait-glow" />
+            <img
+              src="/images/favaz-portrait.webp"
+              alt="Muhammed Favaz AM"
+              className="mobile-portrait-img"
+            />
+          </div>
+
           <div className="landing-info">
             <h2 className="landing-info-h2">MERN STACK</h2>
             <h2 className="landing-front-h2">Full-Stack Developer</h2>
