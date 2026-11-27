@@ -3,7 +3,7 @@
    ========================================= */
 .mywork-scroll-runway {
   width: 100%;
-  height: 190vh;
+  height: 220vh;
   position: relative;
   z-index: 25;
 }
@@ -27,21 +27,21 @@
 }
 
 .mywork-heading {
-  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.8rem, 4.8vw, 4.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: #ffffff;
   margin: 0;
 }
 
 .mywork-accent {
-  color: #e04845;
+  color: var(--accentGlow, #e04845);
 }
 
 .mywork-viewport {
   flex: 1;
   width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   display: flex;
 }
@@ -56,14 +56,25 @@
 .mywork-slide {
   flex: 0 0 42vw;
   min-width: 440px;
-  max-width: 620px;
+  max-width: 600px;
   height: 100%;
-  padding: 32px 42px 56px;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 36px 46px 56px;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 24px;
+  gap: 28px;
+}
+
+/* Alternating layout: Even slides flip Image to Top & Info to Bottom */
+.mywork-slide:nth-child(even) {
+  flex-direction: column-reverse;
+}
+
+.mywork-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .mywork-info-top {
@@ -71,12 +82,11 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
 }
 
 .mywork-num {
-  font-size: clamp(2.2rem, 3.2vw, 3rem);
-  font-weight: 700;
+  font-size: clamp(2.4rem, 3.4vw, 3.2rem);
+  font-weight: 600;
   line-height: 1;
   color: #ffffff;
   font-variant-numeric: tabular-nums;
@@ -87,46 +97,53 @@
 }
 
 .mywork-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 4px;
-}
-
-.mywork-cat {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.52);
-  margin: 0;
-}
-
-.mywork-tools-label {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.45rem;
+  font-weight: 500;
   color: #ffffff;
   margin: 0 0 6px;
 }
 
-.mywork-tools-list {
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.58);
+.mywork-cat {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.48);
   margin: 0;
 }
 
-.mywork-visual {
+.mywork-tools-label {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+
+.mywork-tools-list {
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.52);
+  margin: 0;
+}
+
+/* WorkImage Component */
+.work-image {
+  width: 100%;
+}
+
+.work-image-in {
+  position: relative;
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9.5;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  text-decoration: none;
+  background: #111015;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
 }
 
-.mywork-visual:hover {
-  transform: translateY(-4px) scale(1.015);
+.work-image-in:hover {
+  transform: translateY(-4px);
   border-color: rgba(224, 72, 69, 0.65);
 }
 
@@ -134,40 +151,39 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.mywork-placeholder {
-  width: 100%;
-  height: 100%;
+.work-image-in:hover .mywork-img {
+  transform: scale(1.04);
+}
+
+.work-link {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 4;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(11, 10, 14, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 20px;
+  backdrop-filter: blur(8px);
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
-.mywork-placeholder-tag {
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #e04845;
-  margin-bottom: 8px;
-  font-weight: 600;
+.work-image-in:hover .work-link {
+  background: var(--accentGlow, #e04845);
+  border-color: var(--accentGlow, #e04845);
+  transform: scale(1.08);
 }
 
-.mywork-placeholder-title {
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 6px;
-}
-
-.mywork-placeholder-sub {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.55);
-}
-
+/* Final "Want to see more?" CTA Slide */
 .mywork-cta-slide {
   flex: 0 0 38vw;
   min-width: 360px;
@@ -218,7 +234,9 @@
   box-shadow: 0 12px 34px rgba(224, 72, 69, 0.5);
 }
 
-/* ALL WORKS PAGE (/myworks) */
+/* =========================================
+   ALL WORKS PAGE (/myworks)
+   ========================================= */
 .allworks-page {
   min-height: 100vh;
   background: #0b0a0e;
@@ -303,6 +321,7 @@
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
+  background: #111015;
 }
 
 .allworks-badge {
@@ -324,6 +343,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.allworks-card:hover .allworks-img {
+  transform: scale(1.04);
 }
 
 .allworks-body {

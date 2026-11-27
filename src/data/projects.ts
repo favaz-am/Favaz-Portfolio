@@ -1,106 +1,101 @@
-export interface ProjectItem {
+export interface Project {
   id: string;
+  num: string;
   title: string;
   category: string;
-  progress: number;
-  statusLabel: string;
-  isPrivateCommercial: boolean;
+  tools: string;
   description: string;
-  architectureHighlight: string;
-  techStack: string[];
-  githubUrl?: string;
-  liveUrl?: string; // Add your deployed URL here once German Exam AI is live!
-  image?: string; // Add "/projects/your-image.png" once screenshots are ready
-  gradient?: string; // Temporary visual placeholder until real images are added
-  caseStudy?: {
-    problem: string;
-    architecture: string[];
-    securityAndScale: string;
-  };
+  image: string;
+  link: string;
 }
 
-export const PROJECTS: ProjectItem[] = [
+export const PROJECTS: Project[] = [
   {
     id: "german-exam-ai",
-    title: "German Exam AI Assessment Platform",
-    category: "Commercial EdTech SaaS",
-    progress: 70,
-    statusLabel: "Commercial Build — Deploying Soon",
-    isPrivateCommercial: true,
-    liveUrl: "", // Paste your live URL here in a few days (e.g. "https://german-exam.vercel.app")
-    image: "",
-    gradient: "linear-gradient(135deg, #2b1015 0%, #5c1922 50%, #141218 100%)",
+    num: "01",
+    title: "German Exam Ai",
+    category: "AI / EdTech",
+    tools: "Next.js, TypeScript, Node.js, AI / LLM, Tailwind CSS",
     description:
-      "A commercial language proficiency examination platform built in Next.js featuring timed modules, AI-driven evaluation workflows, and strict exam state persistence.",
-    architectureHighlight:
-      "Next.js App Router frontend with modular assessment state management and protected commercial API routes.",
-    techStack: [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node.js",
-      "AI Evaluation",
-      "MongoDB",
-    ],
-    caseStudy: {
-      problem:
-        "Language learners preparing for standardized German exams lack realistic, timed mock environments that provide instant, structured AI grading on writing and comprehension modules.",
-      architecture: [
-        "Next.js App Router client with isolated exam-taking state and automatic recovery on connection drop.",
-        "Protected backend API routes handling prompt orchestration and rubric-based AI scoring without exposing keys or logic to the client.",
-        "Server-validated timers and structured JSON response parsing for deterministic score breakdowns.",
-      ],
-      securityAndScale:
-        "Source code is maintained in a private commercial repository to protect proprietary grading rubrics, exam datasets, and anti-cheat validation logic.",
-    },
+      "AI-powered platform helping German language learners practice Reading, Writing, Speaking, and B2 exam modules.",
+    image: "/images/german-exam-ai.png",
+    link: "https://github.com/ferasgit/German-Exam-Ai-",
   },
   {
     id: "kara-mol",
-    title: "Kara-mol — 3D AI Digital Assistant",
-    category: "3D Web & AI Engineering",
-    progress: 65,
-    statusLabel: "Active Build (v0.7)",
-    isPrivateCommercial: true,
-    image: "",
-    gradient: "linear-gradient(135deg, #161829 0%, #3b1d2e 55%, #0f0e14 100%)",
+    num: "02",
+    title: "Kara Mol",
+    category: "AI / 3D Desktop",
+    tools: "React, Three.js, React Three Fiber, Python, Pipecat AI",
     description:
-      "An interactive 3D digital companion with decoupled frontend and backend environments, real-time facial blendshape reactions, and conversational memory.",
-    architectureHighlight:
-      "Decoupled React Three Fiber canvas syncing real-time AI emotional states from a Node/Express backend.",
-    techStack: [
-      "React",
-      "Three.js",
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "ARKit Blendshapes",
-    ],
-    caseStudy: {
-      problem:
-        "Standard web chatbots feel static and lifeless. Bridging LLM responses with real-time 3D character animation in the browser requires tight state synchronization without dropping below 60 FPS.",
-      architecture: [
-        "Dedicated frontend repository managing the Three.js / React Three Fiber scene graph and morph target interpolation.",
-        "Separate Node.js & Express backend service processing conversational context and mapping sentiment tags to 3D ARKit blendshape weights.",
-        "Smooth bone and morph-target lerp loops inside useFrame to ensure zero-stutter transitions.",
-      ],
-      securityAndScale:
-        "Maintained in a multi-branch private architecture separating 3D asset pipelines from backend API credentials.",
-    },
+      "Cross-platform 3D interactive AI desktop companion powered by React Three Fiber and a real-time Python Pipecat backend.",
+    image: "/images/kara-mol.png",
+    link: "https://github.com/favaz-am/Kara-mol",
   },
   {
-    id: "shopping-cart-engine",
-    title: "Full-Stack Shopping Cart & Inventory System",
-    category: "E-Commerce Architecture",
-    progress: 80,
-    statusLabel: "Public Repo — Core Complete",
-    isPrivateCommercial: false,
-    image: "",
-    gradient: "linear-gradient(135deg, #1f1216 0%, #4a151b 50%, #100f14 100%)",
+    id: "shopping-cart",
+    num: "03",
+    title: "Ecommerce Shopping Cart",
+    category: "Full-Stack / E-Commerce",
+    tools: "React, Node.js, Express.js, MongoDB, Tailwind CSS",
     description:
-      "A scalable e-commerce cart and product management system demonstrating clean state synchronization, dynamic pricing calculations, and responsive checkout flows.",
-    architectureHighlight:
-      "Optimized cart state mutations, persistent storage syncing, and modular MERN component structure.",
-    techStack: ["MongoDB", "Express.js", "React", "Node.js", "JavaScript"],
-    githubUrl: "https://github.com/favaz-am",
+      "Full-stack online storefront featuring product browsing, dynamic cart state management, and streamlined checkout flows.",
+    image: "/images/shopping-cart.png",
+    link: "https://github.com/favaz-am/Shopping-Cart",
+  },
+  {
+    id: "memory-flip-card",
+    num: "04",
+    title: "Memory Flip Card",
+    category: "Interactive Game",
+    tools: "React, JavaScript, CSS3, HTML5",
+    description:
+      "Interactive card-matching game with smooth 3D flip logic—match pairs to keep them open and clear the entire board.",
+    image: "/images/memory-flip-card.png",
+    link: "https://github.com/favaz-am/Memory-Flip-Card",
+  },
+  {
+    id: "todo-app",
+    num: "05",
+    title: "Todo App",
+    category: "Productivity / Web App",
+    tools: "React, JavaScript, CSS3, Local Storage",
+    description:
+      "Clean, responsive task manager for organizing daily goals with instant creation, completion tracking, and filtering.",
+    image: "/images/todo-app.png",
+    link: "https://github.com/favaz-am/TodoApp",
+  },
+  {
+    id: "flip-clock",
+    num: "06",
+    title: "FlipClock",
+    category: "Utility / Web App",
+    tools: "HTML5, CSS3, JavaScript",
+    description:
+      "Aesthetic live and customizable flip clock featuring 24-hour toggles, fixed-time mode, keyboard shortcuts, and fullscreen display.",
+    image: "/images/flip-clock.png",
+    link: "https://github.com/favaz-am/FlipClock",
+  },
+  {
+    id: "simple-calculator",
+    num: "07",
+    title: "Simple Calculator",
+    category: "Utility / Web App",
+    tools: "HTML5, CSS3, JavaScript",
+    description:
+      "Lightweight, responsive web calculator built for fast, reliable everyday arithmetic with a clean button interface.",
+    image: "/images/simple-calculator.png",
+    link: "https://favaz-am.github.io/Simple-Calculator/",
+  },
+  {
+    id: "java-calculator",
+    num: "08",
+    title: "Calculator in Java",
+    category: "Core Java / Desktop",
+    tools: "Java, OOP",
+    description:
+      "Core Java calculator application implementing structured arithmetic operations and clean object-oriented logic.",
+    image: "/images/java-calculator.png",
+    link: "https://github.com/favaz-am/Java-Calculator",
   },
 ];

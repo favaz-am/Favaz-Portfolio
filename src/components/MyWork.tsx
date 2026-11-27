@@ -2,39 +2,35 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import WorkImage from "@/components/WorkImage";
 import { PROJECTS } from "@/data/projects";
 
-const FALLBACK_GRADIENTS = [
-  "linear-gradient(135deg, #2b1015 0%, #5c1922 50%, #141218 100%)",
-  "linear-gradient(135deg, #161829 0%, #3b1d2e 55%, #0f0e14 100%)",
-  "linear-gradient(135deg, #1f1216 0%, #4a151b 50%, #100f14 100%)",
-];
+const FEATURED_PROJECTS = PROJECTS.slice(0, 4);
 
 export default function MyWork() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const runwayRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
- useEffect(() => {
+  useEffect(() => {
     let targetX = 0;
     let currentX = 0;
     let rafId = 0;
 
     const updateTarget = () => {
-      const section = sectionRef.current;
+      const runway = runwayRef.current;
       const track = trackRef.current;
-      if (!section || !track) return;
+      if (!runway || !track) return;
 
-      const rect = section.getBoundingClientRect();
-      const scrollDistance = section.offsetHeight - window.innerHeight;
-      if (scrollDistance <= 0) return;
+      const rect = runway.getBoundingClientRect();
+      const scrollableDistance = runway.offsetHeight - window.innerHeight;
+      if (scrollableDistance <= 0) return;
 
-      const progress = Math.min(Math.max(-rect.top / scrollDistance, 0), 1);
+      const progress = Math.min(Math.max(-rect.top / scrollableDistance, 0), 1);
       const maxTranslate = Math.max(track.scrollWidth - window.innerWidth, 0);
       targetX = -progress * maxTranslate;
     };
 
     const animate = () => {
-      // 0.075 = silky spinner-like coasting inertia (lower = longer glide)
       currentX += (targetX - currentX) * 0.075;
 
       if (trackRef.current) {
@@ -47,7 +43,7 @@ export default function MyWork() {
     window.addEventListener("scroll", updateTarget, { passive: true });
     window.addEventListener("resize", updateTarget);
     updateTarget();
-    currentX = targetX; // Snap on initial load so it doesn't drift in from 0
+    currentX = targetX;
     rafId = requestAnimationFrame(animate);
 
     return () => {
@@ -58,7 +54,7 @@ export default function MyWork() {
   }, []);
 
   return (
-    <section id="projects" ref={sectionRef} className="mywork-scroll-runway">
+    <section id="projects" ref={runwayRef} className="mywork-scroll-runway">
       <div className="mywork-sticky">
         <div className="mywork-header">
           <h2 className="mywork-heading">
@@ -68,90 +64,39 @@ export default function MyWork() {
 
         <div className="mywork-viewport">
           <div ref={trackRef} className="mywork-track">
-            {PROJECTS.map((project, index) => {
-             const isReversed = index % 2 === 0;
-              const num = String(index + 1).padStart(2, "0");
-              const linkHref = project.liveUrl || project.githubUrl || "#";
-              const bgGradient =
-                project.gradient ||
-                FALLBACK_GRADIENTS[index % FALLBACK_GRADIENTS.length];
-
-              const infoBlock = (
+            {FEATURED_PROJECTS.map((project) => (
+              <div key={project.id} className="mywork-slide">
                 <div className="mywork-info">
                   <div className="mywork-info-top">
-                    <span className="mywork-num">{num}</span>
+                    <span className="mywork-num">{project.num}</span>
                     <div className="mywork-title-group">
                       <h3 className="mywork-title">{project.title}</h3>
                       <p className="mywork-cat">{project.category}</p>
                     </div>
                   </div>
+
                   <div className="mywork-tools">
-                    <p className="mywork-tools-label">Tools and features</p>
-                    <p className="mywork-tools-list">
-                      {project.techStack.join(", ")}
-                    </p>
+                    <h4 className="mywork-tools-label">Tools and features</h4>
+                    <p className="mywork-tools-list">{project.tools}</p>
                   </div>
                 </div>
-              );
 
-              const visualBlock = (
-                <a
-                  href={linkHref}
-                  target={linkHref !== "#" ? "_blank" : undefined}
-                  rel={linkHref !== "#" ? "noopener noreferrer" : undefined}
-                  className="mywork-visual"
-                  style={{ background: bgGradient }}
-                >
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="mywork-img"
-                    />
-                  ) : (
-                    <div className="mywork-placeholder">
-                      <span className="mywork-placeholder-tag">
-                        {project.statusLabel}
-                      </span>
-                      <h4 className="mywork-placeholder-title">
-                        {project.title}
-                      </h4>
-                      <span className="mywork-placeholder-sub">
-                        {project.progress}% Complete
-                      </span>
-                    </div>
-                  )}
-                </a>
-              );
+                <WorkImage
+                  image={project.image}
+                  alt={project.title}
+                  link={project.link}
+                />
+              </div>
+            ))}
 
-              return (
-                <article
-                  key={project.id}
-                  className={`mywork-slide ${isReversed ? "is-reversed" : ""}`}
-                >
-                  {isReversed ? (
-                    <>
-                      {infoBlock}
-                      {visualBlock}
-                    </>
-                  ) : (
-                    <>
-                      {visualBlock}
-                      {infoBlock}
-                    </>
-                  )}
-                </article>
-              );
-            })}
-
-            {/* Final CTA Panel */}
+            {/* Final CTA Slide */}
             <div className="mywork-cta-slide">
               <div className="mywork-cta-content">
                 <h3 className="mywork-cta-title">Want to see more?</h3>
                 <p className="mywork-cta-sub">
-                  Explore all of my projects and creations
+                  Explore all of my projects, experiments, and open-source repositories.
                 </p>
-                <Link href="/myworks" className="mywork-cta-btn">
+                <Link href="/myworks" className="mywork-cta-btn" data-cursor="disable">
                   See All Works <span aria-hidden="true">→</span>
                 </Link>
               </div>
