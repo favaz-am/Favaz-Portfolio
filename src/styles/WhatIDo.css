@@ -3,11 +3,10 @@
    ========================================= */
 .whatido-scroll-track {
   width: 100%;
-  height: 135vh;
+  height: 120vh;
   position: relative;
   z-index: 20;
 }
-
 .whatido-section {
   position: sticky;
   top: 0;
