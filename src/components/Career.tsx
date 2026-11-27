@@ -59,12 +59,10 @@ export default function Career() {
       const rect = timeline.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Finish 100% when the bottom of the timeline reaches 82% of the viewport
       const start = windowHeight * 0.68;
       const travelDistance = Math.max(rect.height - windowHeight * 0.14, 1);
       let progress = Math.min(Math.max((start - rect.top) / travelDistance, 0), 1);
 
-      // Guarantee 100% completion when reaching the bottom of the page
       const atBottom =
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 24;
@@ -78,11 +76,16 @@ export default function Career() {
         orbRef.current.style.opacity = progress > 0.01 ? "1" : "0";
       }
 
-      const step = 1 / (MILESTONES.length - 1);
-      rowRefs.current.forEach((row, index) => {
+      const beamY = rect.top + progress * rect.height;
+
+      rowRefs.current.forEach((row) => {
         if (!row) return;
-        const threshold = index * step - 0.12;
-        row.dataset.active = progress >= threshold ? "true" : "false";
+        const yearPill = row.querySelector(".career-year");
+        const triggerY = yearPill
+          ? yearPill.getBoundingClientRect().top
+          : row.getBoundingClientRect().top;
+
+        row.dataset.active = beamY >= triggerY ? "true" : "false";
       });
     };
 
@@ -128,7 +131,26 @@ export default function Career() {
 
                 {/* Center Column */}
                 <div className="career-center">
-                  <span className="career-year">{item.year}</span>
+                  <span className="career-year">
+                    {item.year}
+                    <svg
+                      className="career-year-flow"
+                      viewBox="0 0 120 44"
+                      preserveAspectRatio="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        className="flow-path"
+                        d="M 60 1 H 98 A 21 21 0 0 1 98 43 H 60"
+                        pathLength={100}
+                      />
+                      <path
+                        className="flow-path"
+                        d="M 60 1 H 22 A 21 21 0 0 0 22 43 H 60"
+                        pathLength={100}
+                      />
+                    </svg>
+                  </span>
                 </div>
 
                 {/* Right Column (Glassmorphic Card) */}
