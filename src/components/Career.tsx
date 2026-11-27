@@ -78,14 +78,19 @@ export default function Career() {
 
       const beamY = rect.top + progress * rect.height;
 
-      rowRefs.current.forEach((row) => {
+      rowRefs.current.forEach((row, index) => {
         if (!row) return;
         const yearPill = row.querySelector(".career-year");
         const triggerY = yearPill
           ? yearPill.getBoundingClientRect().top
           : row.getBoundingClientRect().top;
 
-        row.dataset.active = beamY >= triggerY ? "true" : "false";
+        const isReached = beamY >= triggerY;
+        row.dataset.active = isReached ? "true" : "false";
+
+        if (index === 1 && orbRef.current) {
+          orbRef.current.dataset.flicker = !isReached ? "true" : "false";
+        }
       });
     };
 
