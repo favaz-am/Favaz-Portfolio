@@ -117,14 +117,14 @@ ul {
     pointer-events: none;
   }
 
-  .mobile-portrait-glow {
+ .mobile-portrait-glow {
     position: absolute;
-    inset: 10%;
+    inset: 14%;
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      rgba(224, 72, 69, 0.4) 0%,
-      rgba(110, 38, 53, 0.16) 50%,
+      rgba(224, 72, 69, 0.22) 0%,
+      rgba(110, 38, 53, 0.08) 50%,
       transparent 75%
     );
     filter: blur(36px);
@@ -299,5 +299,10 @@ ul {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     text-align: center;
+  }
+  .character-rim,
+  .landing-circle1,
+  .landing-circle2 {
+    opacity: 0.45;
   }
 }
