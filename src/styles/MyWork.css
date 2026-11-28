@@ -383,7 +383,23 @@
 }
 
 @media (max-width: 680px) {
+  .mywork-track {
+    padding-left: 20px;
+  }
+
   .mywork-slide {
+    flex: 0 0 86vw;
+    min-width: 300px;
+    padding: 24px 20px;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .mywork-slide:nth-child(even) {
+    flex-direction: column;
+  }
+
+  .mywork-cta-slide {
     flex: 0 0 86vw;
     min-width: 300px;
     padding: 24px;
