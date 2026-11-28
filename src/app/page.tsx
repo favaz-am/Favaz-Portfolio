@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CustomCursor from "@/components/CustomCursor";
 import HeroAvatar from "@/components/HeroAvatar";
 import HoverLinks from "@/components/HoverLinks";
@@ -13,6 +13,7 @@ import TechStack from "@/components/TechStack";
 import Contact from "@/components/Contact";
 
 export default function PortfolioHome() {
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const landingDiv = document.getElementById("landingDiv");
     if (!landingDiv) return;
@@ -39,6 +40,7 @@ export default function PortfolioHome() {
         <a href="/#" className="navbar-title" data-cursor="disable">
           MF
         </a>
+
         <a
           href="mailto:favazam98@gmail.com"
           className="navbar-connect"
@@ -46,10 +48,17 @@ export default function PortfolioHome() {
         >
           favazam98@gmail.com
         </a>
-        <ul>
+
+        {/* Desktop Links */}
+        <ul className="desktop-nav-links">
           <li>
             <a href="#about">
               <HoverLinks text="ABOUT" />
+            </a>
+          </li>
+          <li>
+            <a href="#career">
+              <HoverLinks text="CAREER" />
             </a>
           </li>
           <li>
@@ -58,11 +67,48 @@ export default function PortfolioHome() {
             </a>
           </li>
           <li>
+            <a href="#techstack">
+              <HoverLinks text="SKILLS" />
+            </a>
+          </li>
+          <li>
             <a href="#contact">
               <HoverLinks text="CONTACT" />
             </a>
           </li>
         </ul>
+
+        {/* Mobile Menu Icon Button */}
+        <button
+          type="button"
+          className={`mobile-menu-btn ${menuOpen ? "is-open" : ""}`}
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={menuOpen}
+          data-cursor="disable"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      {/* Mobile Dropdown Drawer */}
+      <div className={`mobile-nav-drawer ${menuOpen ? "is-open" : ""}`}>
+        <nav className="mobile-nav-list">
+          <a href="#about" onClick={() => setMenuOpen(false)}>ABOUT</a>
+          <a href="#career" onClick={() => setMenuOpen(false)}>CAREER</a>
+          <a href="#projects" onClick={() => setMenuOpen(false)}>WORK</a>
+          <a href="#techstack" onClick={() => setMenuOpen(false)}>SKILLS</a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}>CONTACT</a>
+        </nav>
+        <a
+          href="mailto:favazam98@gmail.com"
+          className="mobile-nav-email"
+          onClick={() => setMenuOpen(false)}
+        >
+          favazam98@gmail.com
+        </a>
       </div>
 
       {/* AMBIENT GLOWS */}
